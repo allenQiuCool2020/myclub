@@ -1,0 +1,87 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+<h1>Admin Dashboard</h1>
+<br>
+
+
+<div class="card">
+    <div class="card-header">
+      Featured
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Count</h5>
+      <p class="card-text">Event Count: {{ event_count }}</p>
+      <p class="card-text">Venue Count: {{ venue_count }}</p>
+      <p class="card-text">User Count: {{ user_count }}</p>
+
+    </div>
+  </div>
+<br>
+
+<form action="" method="POST">
+    {% csrf_token %}
+
+ 
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Venue Name</th>
+            <th scope="col">Events</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for venue in venue_list %}
+        <tr>
+            <td><a href="{% url 'show-venue' venue.id %}">{{ venue }}</a></td>
+            <td>
+                <a class="btn btn-info" href="{% url 'venue-events' venue.id %}">List events</a>
+            </td>             
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <!-- <button class="btn btn-secondary" type="submit">Update Approval</button> -->
+
+</form>
+<h1>Event Approval Form</h1>
+<br>
+<form action="" method="POST">
+    {% csrf_token %}
+
+ 
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Event Name</th>
+            <th scope="col">Approved</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for event in event_list %}
+        <tr>
+            <td>{{ event.name }}</td>
+            <td>
+                {% if event.approved %}
+                    <div class="form-check">
+                        <input id="my-input" class="form-check-input" type="checkbox" checked="checked" name="boxes" value={{ event.id }}>
+                    </div>
+                {% else %}
+                    <div class="form-check">
+                        <input id="my-input" class="form-check-input" type="checkbox" value={{ event.id }} name="boxes" >
+                    </div>
+                {% endif %}
+            </td>             
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <button class="btn btn-secondary" type="submit">Update Approval</button>
+
+</form>
+{% endblock %}
+
